@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Yura — HSC 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500&family=Hind+Siliguri:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #060910;
+  --ink:       #eef1fa;
+  --ink-muted: rgba(238,241,250,0.45);
+  --ink-soft:  rgba(238,241,250,0.72);
+  --blue:      #6aadff;
+  --blue-dim:  rgba(106,173,255,0.13);
+  --blue-glow: rgba(106,173,255,0.25);
+  --violet:    #b39dfa;
+  --gold:      #f5c96a;
+  --glass:     rgba(255,255,255,0.045);
+  --glass-b:   rgba(255,255,255,0.09);
+  --cream:     #f5f0e8;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
+
+/* STARS */
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.08;transform:scale(1);}50%{opacity:.75;transform:scale(1.7);}}
+
+/* SCREENS */
+#app{position:relative;width:100%;min-height:100vh;}
+.screen{position:absolute;inset:0;width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .8s ease;z-index:2;}
+.screen.active{opacity:1;visibility:visible;pointer-events:auto;position:relative;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── S1 WELCOME ── */
+.w-inner{display:flex;flex-direction:column;align-items:center;gap:30px;text-align:center;}
+.overline{font-family:'Hind Siliguri',sans-serif;font-size:10px;letter-spacing:.45em;text-transform:uppercase;color:var(--blue);opacity:.75;font-weight:400;}
+.orb-wrap{position:relative;width:114px;height:114px;}
+.o-ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(106,173,255,.2);animation:rp 4s ease-in-out infinite;}
+.o-ring:nth-child(2){inset:14px;border-color:rgba(179,157,250,.17);animation-delay:.9s;}
+.o-ring:nth-child(3){inset:28px;border-color:rgba(106,173,255,.11);animation-delay:1.8s;}
+@keyframes rp{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.09);opacity:1;}}
+.o-center{position:absolute;inset:38px;border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(106,173,255,.42),rgba(179,157,250,.1) 72%);display:flex;align-items:center;justify-content:center;font-size:19px;}
+.o-center::after{content:'✏';}
+.w-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(19px,5vw,28px);font-weight:400;font-style:italic;color:var(--ink-soft);animation:fadeUp 1s ease both .1s;}
+.w-title strong{font-style:normal;font-weight:600;color:var(--ink);}
+.w-name{color:var(--blue);font-family:'Hind Siliguri',sans-serif;font-style:normal;}
+.open-btn{position:relative;padding:16px 50px;border-radius:100px;border:1px solid var(--glass-b);background:var(--glass);color:var(--ink);font-family:'Playfair Display',serif;font-size:18px;font-weight:400;letter-spacing:.05em;cursor:pointer;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden;transition:transform .3s,border-color .3s;animation:fadeUp 1s ease both .35s;}
+.open-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--blue-glow),transparent 70%);opacity:0;transition:opacity .4s;}
+.open-btn:hover::before{opacity:1;}
+.open-btn:hover{border-color:rgba(106,173,255,.4);transform:translateY(-1px);}
+.open-btn:active{transform:scale(.96);}
+.date-badge{font-family:'Hind Siliguri',sans-serif;font-size:12px;color:var(--gold);letter-spacing:.1em;border:1px solid rgba(245,201,106,.22);border-radius:100px;padding:6px 20px;animation:fadeUp 1s ease both .55s;}
+
+/* ── S2 CHEER ── */
+.cheer-wrap{display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center;max-width:560px;position:relative;z-index:1;}
+.cheer-hl{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,8vw,56px);line-height:1.25;font-weight:400;font-style:italic;color:var(--ink);min-height:2.5em;}
+.cheer-hl .accent{color:var(--blue);font-style:normal;font-weight:600;}
+.cheer-hl .hs{font-family:'Hind Siliguri',sans-serif;font-style:normal;font-weight:600;color:var(--violet);}
+.cur{display:inline-block;width:2px;height:.82em;background:var(--blue);vertical-align:middle;margin-left:3px;border-radius:1px;animation:blink .9s steps(1) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.fo{position:absolute;border-radius:50%;filter:blur(75px);pointer-events:none;animation:od ease-in-out infinite;}
+@keyframes od{0%,100%{transform:translate(0,0);}50%{transform:translate(18px,-26px);}}
+.conf-item{position:absolute;top:-2%;pointer-events:none;animation:cdrop linear forwards;}
+@keyframes cdrop{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+.nav-btn{opacity:0;padding:14px 36px;border-radius:100px;border:1px solid var(--glass-b);background:var(--glass);color:var(--ink-soft);font-family:'Hind Siliguri',sans-serif;font-size:13px;letter-spacing:.06em;cursor:pointer;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:transform .3s,color .3s,border-color .3s;display:flex;align-items:center;gap:10px;}
+.nav-btn::before{content:'';width:11px;height:11px;border-radius:50%;border:1px solid rgba(106,173,255,.6);flex-shrink:0;}
+.nav-btn.show{animation:fadeUp .8s ease forwards;}
+.nav-btn:hover{color:var(--ink);border-color:rgba(106,173,255,.4);}
+.nav-btn:active{transform:scale(.96);}
+
+/* ── S3 LETTER ── */
+#screen-letter{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.letter-scene{display:flex;flex-direction:column;align-items:center;gap:34px;width:100%;max-width:450px;}
+.env-wrap{position:relative;width:min(330px,88vw);}
+.envelope{position:relative;width:100%;aspect-ratio:3/2;cursor:pointer;user-select:none;}
+.env-body{position:relative;width:100%;height:100%;background:linear-gradient(145deg,#c5d5ee,#a5bce0);border-radius:6px;box-shadow:0 32px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06) inset;overflow:hidden;}
+.env-body::before{content:'';position:absolute;inset:14px 18px;background:repeating-linear-gradient(transparent,transparent 11px,rgba(106,173,255,.13) 12px);}
+.env-body::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49.5%,rgba(0,0,0,.04) 50%,transparent 50.5%),linear-gradient(to bottom left,transparent 49.5%,rgba(0,0,0,.03) 50%,transparent 50.5%);}
+.env-flap{position:absolute;top:0;left:0;right:0;height:0;border-left:calc(min(330px,88vw)/2) solid transparent;border-right:calc(min(330px,88vw)/2) solid transparent;border-top:calc(min(330px,88vw)/3) solid #88b0d8;transform-origin:top;transition:transform 1.2s cubic-bezier(.6,0,.2,1);z-index:4;filter:drop-shadow(0 4px 8px rgba(0,0,0,.18));}
+.envelope.open .env-flap{transform:rotateX(180deg);z-index:1;}
+.env-seal{position:absolute;top:32%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 32%,#7a9fce,#2a5e9a);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:19px;color:rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.4);z-index:5;transition:opacity .3s,transform .3s;}
+.env-seal::after{content:'S';}
+.envelope.open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(.3);}
+.env-tap{position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-family:'Hind Siliguri',sans-serif;font-size:11px;color:var(--ink-muted);letter-spacing:.08em;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.38;}50%{opacity:.88;}}
+.envelope.open~.env-tap{display:none;}
+
+/* Letter paper */
+.letter-paper{width:min(370px,90vw);max-height:0;opacity:0;overflow:hidden;transform:translateY(20px) scale(.97);background:var(--cream);border-radius:4px;color:#16213e;box-shadow:0 32px 68px rgba(0,0,0,.5);background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(106,173,255,.09) 28px);padding:0 28px;transition:max-height 1.1s cubic-bezier(.2,.8,.2,1),opacity .8s ease,transform .8s ease,padding 1.1s ease;}
+.letter-paper.open{max-height:72vh;opacity:1;transform:none;padding:32px 28px 28px;overflow-y:auto;}
+.letter-paper::-webkit-scrollbar{width:3px;}
+.letter-paper::-webkit-scrollbar-thumb{background:rgba(0,0,80,.1);border-radius:2px;}
+.l-salute{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;font-style:italic;color:#1a237e;margin-bottom:18px;}
+.l-body{font-family:'Inter',sans-serif;font-size:15px;line-height:2.05;color:#1a1a3e;white-space:pre-wrap;}
+.l-hi{background:linear-gradient(transparent 58%,rgba(106,173,255,.22) 58%);font-weight:500;}
+.l-signoff{margin-top:22px;font-family:'Playfair Display',serif;font-size:17px;font-style:italic;text-align:right;color:#1a237e;}
+
+/* ── S4 COUNTDOWN ── */
+#screen-timer{overflow-y:auto;}
+.timer-inner{display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center;width:min(480px,94vw);position:relative;z-index:1;}
+.timer-heading{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,34px);font-weight:400;font-style:italic;color:var(--ink);line-height:1.35;}
+.timer-heading .hs{font-family:'Hind Siliguri',sans-serif;font-style:normal;font-size:clamp(14px,3.5vw,20px);color:var(--gold);display:block;margin-top:4px;font-weight:500;letter-spacing:.05em;}
+.timer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;}
+.t-block{background:var(--glass);border:1px solid var(--glass-b);border-radius:16px;padding:22px 8px 16px;backdrop-filter:blur(12px);position:relative;overflow:hidden;}
+.t-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--blue-dim),transparent 70%);}
+.t-num{font-family:'Playfair Display',serif;font-size:clamp(26px,6.5vw,44px);font-weight:700;color:var(--blue);line-height:1;position:relative;}
+.t-label{font-family:'Hind Siliguri',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-top:8px;font-weight:400;position:relative;}
+.exam-card{background:linear-gradient(135deg,rgba(106,173,255,.1),rgba(179,157,250,.1));border:1px solid rgba(106,173,255,.22);border-radius:18px;padding:26px 24px;width:100%;text-align:left;}
+.ec-label{font-family:'Hind Siliguri',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);opacity:.8;margin-bottom:10px;}
+.ec-date{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.ec-note{font-family:'Hind Siliguri',sans-serif;font-size:14px;color:var(--ink-soft);line-height:1.75;}
+.done-msg{display:none;flex-direction:column;align-items:center;gap:12px;}
+.done-msg.show{display:flex;}
+.dm-text{font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--gold);}
+.affirmation{font-family:'Playfair Display',serif;font-size:clamp(16px,4vw,20px);font-style:italic;color:var(--ink-soft);line-height:1.75;max-width:380px;}
+.affirmation strong{color:var(--blue);font-style:normal;}
+.final-line{font-family:'Hind Siliguri',sans-serif;font-size:15px;color:var(--ink-muted);line-height:1.9;}
+.final-line .name-gold{font-family:'Playfair Display',serif;font-style:italic;font-size:19px;color:var(--gold);display:block;margin-bottom:4px;}
+
+/* MUSIC */
+.music-pill{position:fixed;bottom:18px;right:18px;z-index:80;opacity:0;transition:opacity .6s;display:flex;align-items:center;gap:8px;background:rgba(4,7,14,.72);border:1px solid var(--glass-b);backdrop-filter:blur(18px);border-radius:100px;padding:8px 16px;}
+.music-pill.on{opacity:1;}
+.m-bars{display:flex;align-items:flex-end;gap:2.5px;height:14px;}
+.b{width:2.5px;border-radius:2px;background:var(--blue);transform-origin:bottom;animation:bd ease-in-out infinite;}
+.b:nth-child(1){animation-duration:.7s;height:40%;}
+.b:nth-child(2){animation-duration:.95s;animation-delay:.1s;height:75%;}
+.b:nth-child(3){animation-duration:.6s;animation-delay:.2s;height:55%;}
+.b:nth-child(4){animation-duration:.8s;animation-delay:.05s;height:85%;}
+@keyframes bd{0%,100%{transform:scaleY(.3);}50%{transform:scaleY(1);}}
+.m-label{font-family:'Hind Siliguri',sans-serif;font-size:11px;color:var(--ink-muted);letter-spacing:.05em;}
+
+@media(max-width:380px){
+  .timer-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div id="starfield"></div>
+<div id="app">
+
+  <!-- S1 WELCOME -->
+  <section class="screen active" id="screen-welcome">
+    <div class="w-inner">
+      <div class="overline">তোমার জন্য একটা ছোট্ট চমক</div>
+      <div class="orb-wrap">
+        <div class="o-ring"></div><div class="o-ring"></div><div class="o-ring"></div>
+        <div class="o-center"></div>
+      </div>
+      <div class="w-title">for <strong><span class="w-name">Shahifa Mahrin Yura</span></strong></div>
+      <button class="open-btn" id="openBtn">Open Your Gift ✦</button>
+      <div class="date-badge">HSC Exam &nbsp;·&nbsp; ২ জুলাই, ২০২৬</div>
+    </div>
+  </section>
+
+  <!-- S2 CHEER -->
+  <section class="screen" id="screen-cheer">
+    <div class="fo" style="width:280px;height:280px;top:4%;left:-9%;background:rgba(106,173,255,.08);animation-duration:11s;"></div>
+    <div class="fo" style="width:340px;height:340px;bottom:7%;right:-13%;background:rgba(179,157,250,.07);animation-duration:14s;animation-delay:3s;"></div>
+    <div class="cheer-wrap">
+      <div class="cheer-hl" id="cheerHl">
+        <span id="typedSpan"></span><span class="cur" id="cur"></span>
+      </div>
+      <button class="nav-btn" id="readLetterBtn">চিঠিটা পড়ো</button>
+    </div>
+  </section>
+
+  <!-- S3 LETTER -->
+  <section class="screen" id="screen-letter">
+    <div class="letter-scene">
+      <div class="env-wrap">
+        <div class="envelope" id="envelope">
+          <div class="env-body"><div class="env-seal"></div></div>
+          <div class="env-flap"></div>
+        </div>
+        <div class="env-tap" id="envTap">tap to open</div>
+
+        <div class="letter-paper" id="letterPaper">
+          <div class="l-salute">Dear Yura,</div>
+          <div class="l-body">I don't really know how to start this —
+there's just too much I want to say.
+
+But here's what I know for certain:
+<span class="l-hi">you have worked so incredibly hard for this.</span>
+Every late night, every revision, every moment
+you pushed through when it felt impossible —
+that was all you.
+
+You are so much stronger than you give
+yourself credit for. And on July 2nd,
+I want you to walk into that exam hall
+and show them exactly what you're made of.
+
+Don't chase perfection.
+<span class="l-hi">Just show up, stay calm, and trust yourself.</span>
+That is more than enough.
+
+I am so proud of you — not just for the exam,
+but for the person you are becoming.
+
+Go get that A+, Yura.
+I'll be cheering for you every second.</div>
+          <div class="l-signoff">— your brother, Alve Khan ♡</div>
+        </div>
+      </div>
+      <button class="nav-btn" id="timerBtn">Countdown দেখো</button>
+    </div>
+  </section>
+
+  <!-- S4 COUNTDOWN -->
+  <section class="screen" id="screen-timer">
+    <div class="timer-inner">
+
+      <div class="timer-heading">
+        Time until your big day
+        <span class="hs">পরীক্ষা শুরু হতে আর মাত্র...</span>
+      </div>
+
+      <div id="timerGrid" class="timer-grid">
+        <div class="t-block"><div class="t-num" id="tDays">--</div><div class="t-label">দিন</div></div>
+        <div class="t-block"><div class="t-num" id="tHours">--</div><div class="t-label">ঘণ্টা</div></div>
+        <div class="t-block"><div class="t-num" id="tMins">--</div><div class="t-label">মিনিট</div></div>
+        <div class="t-block"><div class="t-num" id="tSecs">--</div><div class="t-label">সেকেন্ড</div></div>
+      </div>
+
+      <div class="done-msg" id="doneMsg">
+        <div style="font-size:36px;">✦</div>
+        <div class="dm-text">Today is the day, Yura!</div>
+      </div>
+
+      <div class="exam-card">
+        <div class="ec-label">Exam Details</div>
+        <div class="ec-date">July 2, 2026 · 10:00 AM</div>
+        <div class="ec-note">HSC Examination 2026<br>সকাল ১০টায় শুরু · Walk in with confidence. You've got this.</div>
+      </div>
+
+      <div class="affirmation">
+        "Hard work doesn't go to waste —<br>
+        <strong>yours won't either.</strong>"
+      </div>
+
+      <div class="final-line">
+        <span class="name-gold">Shahifa Mahrin Yura,</span>
+        you are going to absolutely crush it. 💙<br><br>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--ink-muted);">— from your brother,</span><br>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--blue);">Alve Khan</span>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<div class="music-pill" id="musicPill">
+  <div class="m-bars"><div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div></div>
+  <span class="m-label">study vibes</span>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=relaxing-piano-115810.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+(function(){
+'use strict';
+
+var screens={
+  welcome:document.getElementById('screen-welcome'),
+  cheer:document.getElementById('screen-cheer'),
+  letter:document.getElementById('screen-letter'),
+  timer:document.getElementById('screen-timer')
+};
+function goTo(n){Object.keys(screens).forEach(function(k){screens[k].classList.toggle('active',k===n);});window.scrollTo({top:0});}
+
+/* Stars */
+(function(){
+  var f=document.getElementById('starfield'),n=window.innerWidth<600?48:88;
+  for(var i=0;i<n;i++){
+    var s=document.createElement('div');s.className='star';
+    var sz=Math.random()*1.7+.3;
+    s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;animation-duration:'+(3+Math.random()*5)+'s;animation-delay:'+(Math.random()*7)+'s';
+    f.appendChild(s);
+  }
+})();
+
+/* Music */
+var music=document.getElementById('bgMusic');
+var pill=document.getElementById('musicPill');
+music.volume=.28;
+function startMusic(){music.play().then(function(){pill.classList.add('on');}).catch(function(){pill.classList.add('on');});}
+
+/* Confetti */
+var CC=['#6aadff','#b39dfa','#f5c96a','#fff','#93e9be'];
+function confetti(n,parent){
+  for(var i=0;i<n;i++){
+    var c=document.createElement('div');c.className='conf-item';
+    c.style.cssText='position:absolute;left:'+Math.random()*100+'%;width:'+(4+Math.random()*6)+'px;height:'+(6+Math.random()*9)+'px;background:'+CC[Math.floor(Math.random()*CC.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';animation-duration:'+(2.4+Math.random()*2.5)+'s;animation-delay:'+(Math.random()*1.3)+'s;opacity:.88;';
+    parent.appendChild(c);
+    setTimeout(function(el){return function(){el.remove()};}(c),6000);
+  }
+}
+
+/* S1→S2 */
+document.getElementById('openBtn').addEventListener('click',function(){
+  startMusic();goTo('cheer');confetti(60,screens.cheer);setTimeout(typeCheer,400);
+},{once:true});
+
+/* Typing */
+var CHEER="This is it.,<br><span class='hs'>Yura!</span><br><span class='accent'>No one can stop you now.</span>";
+function typeCheer(){
+  var el=document.getElementById('typedSpan'),cur=document.getElementById('cur');
+  var tokens=CHEER.match(/<[^>]+>|[^<]/g)||[];
+  var i=0,buf='';cur.style.display='inline-block';
+  function step(){
+    if(i>=tokens.length){setTimeout(function(){cur.style.display='none';},900);setTimeout(function(){document.getElementById('readLetterBtn').classList.add('show');},500);return;}
+    var t=tokens[i++];
+    if(t[0]==='<'){buf+=t;el.innerHTML=buf;step();}
+    else{buf+=t;el.innerHTML=buf;setTimeout(step,48);}
+  }
+  step();
+}
+
+/* S2→S3 */
+document.getElementById('readLetterBtn').addEventListener('click',function(){goTo('letter');});
+
+/* Envelope */
+var env=document.getElementById('envelope'),paper=document.getElementById('letterPaper'),opened=false;
+env.addEventListener('click',function(){
+  if(opened)return;opened=true;
+  env.classList.add('open');
+  document.getElementById('envTap').style.display='none';
+  setTimeout(function(){paper.classList.add('open');},680);
+  setTimeout(function(){document.getElementById('timerBtn').classList.add('show');},2100);
+});
+
+/* S3→S4 */
+document.getElementById('timerBtn').addEventListener('click',function(){goTo('timer');startCountdown();});
+
+/* Countdown — July 2 2026, 10:00 AM Bangladesh time (UTC+6) */
+function startCountdown(){
+  var target=new Date('2026-07-02T10:00:00+06:00').getTime();
+  function tick(){
+    var diff=target-Date.now();
+    if(diff<=0){
+      document.getElementById('timerGrid').style.display='none';
+      document.getElementById('doneMsg').classList.add('show');
+      return;
+    }
+    var d=Math.floor(diff/86400000);
+    var h=Math.floor((diff%86400000)/3600000);
+    var m=Math.floor((diff%3600000)/60000);
+    var s=Math.floor((diff%60000)/1000);
+    function p(n){return n<10?'0'+n:''+n;}
+    document.getElementById('tDays').textContent=d;
+    document.getElementById('tHours').textContent=p(h);
+    document.getElementById('tMins').textContent=p(m);
+    document.getElementById('tSecs').textContent=p(s);
+    setTimeout(tick,1000);
+  }
+  tick();
+}
+
+})();
+</script>
+</body>
+</html>
