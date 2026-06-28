@@ -40,24 +40,28 @@ html,body{width:100%;min-height:100%;background:var(--bg);color:var(--ink);font-
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── S1 WELCOME ── */
-.w-inner{display:flex;flex-direction:column;align-items:center;gap:30px;text-align:center;}
+.w-inner{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;}
 .overline{font-family:'Hind Siliguri',sans-serif;font-size:10px;letter-spacing:.45em;text-transform:uppercase;color:var(--blue);opacity:.75;font-weight:400;}
-.orb-wrap{position:relative;width:114px;height:114px;}
-.o-ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(106,173,255,.2);animation:rp 4s ease-in-out infinite;}
-.o-ring:nth-child(2){inset:14px;border-color:rgba(179,157,250,.17);animation-delay:.9s;}
-.o-ring:nth-child(3){inset:28px;border-color:rgba(106,173,255,.11);animation-delay:1.8s;}
-@keyframes rp{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.09);opacity:1;}}
-.o-center{position:absolute;inset:38px;border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(106,173,255,.42),rgba(179,157,250,.1) 72%);display:flex;align-items:center;justify-content:center;font-size:19px;}
-.o-center::after{content:'✏';}
-.w-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(19px,5vw,28px);font-weight:400;font-style:italic;color:var(--ink-soft);animation:fadeUp 1s ease both .1s;}
+
+/* Photo with rings */
+.photo-orb{position:relative;width:130px;height:130px;display:flex;align-items:center;justify-content:center;animation:fadeUp 1s ease both 0s;}
+.photo-ring{position:absolute;border-radius:50%;border:1px solid rgba(106,173,255,.22);animation:rp 4s ease-in-out infinite;}
+.photo-ring.r1{inset:-14px;border-color:rgba(106,173,255,.18);animation-delay:0s;}
+.photo-ring.r2{inset:-26px;border-color:rgba(179,157,250,.12);animation-delay:.8s;}
+.photo-ring.r3{inset:-38px;border-color:rgba(106,173,255,.07);animation-delay:1.6s;}
+@keyframes rp{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.05);opacity:1;}}
+.photo-circle{width:130px;height:130px;border-radius:50%;overflow:hidden;border:2.5px solid rgba(106,173,255,.5);box-shadow:0 0 32px rgba(106,173,255,.2),0 8px 32px rgba(0,0,0,.5);flex-shrink:0;}
+.photo-circle img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+
+.w-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(18px,4.5vw,26px);font-weight:400;font-style:italic;color:var(--ink-soft);animation:fadeUp 1s ease both .15s;}
 .w-title strong{font-style:normal;font-weight:600;color:var(--ink);}
 .w-name{color:var(--blue);font-family:'Hind Siliguri',sans-serif;font-style:normal;}
-.open-btn{position:relative;padding:16px 50px;border-radius:100px;border:1px solid var(--glass-b);background:var(--glass);color:var(--ink);font-family:'Playfair Display',serif;font-size:18px;font-weight:400;letter-spacing:.05em;cursor:pointer;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden;transition:transform .3s,border-color .3s;animation:fadeUp 1s ease both .35s;}
+.open-btn{position:relative;padding:15px 46px;border-radius:100px;border:1px solid var(--glass-b);background:var(--glass);color:var(--ink);font-family:'Playfair Display',serif;font-size:17px;font-weight:400;letter-spacing:.05em;cursor:pointer;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden;transition:transform .3s,border-color .3s;animation:fadeUp 1s ease both .3s;}
 .open-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--blue-glow),transparent 70%);opacity:0;transition:opacity .4s;}
 .open-btn:hover::before{opacity:1;}
 .open-btn:hover{border-color:rgba(106,173,255,.4);transform:translateY(-1px);}
 .open-btn:active{transform:scale(.96);}
-.date-badge{font-family:'Hind Siliguri',sans-serif;font-size:12px;color:var(--gold);letter-spacing:.1em;border:1px solid rgba(245,201,106,.22);border-radius:100px;padding:6px 20px;animation:fadeUp 1s ease both .55s;}
+.date-badge{font-family:'Hind Siliguri',sans-serif;font-size:12px;color:var(--gold);letter-spacing:.1em;border:1px solid rgba(245,201,106,.22);border-radius:100px;padding:6px 20px;animation:fadeUp 1s ease both .45s;}
 
 /* ── S2 CHEER ── */
 .cheer-wrap{display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center;max-width:560px;position:relative;z-index:1;}
@@ -139,6 +143,8 @@ html,body{width:100%;min-height:100%;background:var(--bg);color:var(--ink);font-
 
 @media(max-width:380px){
   .timer-grid{grid-template-columns:repeat(2,1fr);}
+  .photo-circle{width:110px;height:110px;}
+  .photo-orb{width:110px;height:110px;}
 }
 </style>
 </head>
@@ -151,12 +157,16 @@ html,body{width:100%;min-height:100%;background:var(--bg);color:var(--ink);font-
   <section class="screen active" id="screen-welcome">
     <div class="w-inner">
       <div class="overline">তোমার জন্য একটা ছোট্ট চমক</div>
-      <div class="orb-wrap">
-        <div class="o-ring"></div><div class="o-ring"></div><div class="o-ring"></div>
-        <div class="o-center"></div>
-      <div style="width:100px;height:100px;border-radius:50%;overflow:hidden;border:2px solid rgba(106,173,255,0.4);margin-bottom:4px;">
-<img src="yura.png" style="width:100%;height:100%;object-fit:cover;">
-</div>
+
+      <div class="photo-orb">
+        <div class="photo-ring r1"></div>
+        <div class="photo-ring r2"></div>
+        <div class="photo-ring r3"></div>
+        <div class="photo-circle">
+          <img src="yura.png" alt="Yura">
+        </div>
+      </div>
+
       <div class="w-title">for <strong><span class="w-name">Shahifa Mahrin Yura</span></strong></div>
       <button class="open-btn" id="openBtn">Open Your Gift ✦</button>
       <div class="date-badge">HSC Exam &nbsp;·&nbsp; ২ জুলাই, ২০২৬</div>
@@ -316,7 +326,7 @@ document.getElementById('openBtn').addEventListener('click',function(){
 },{once:true});
 
 /* Typing */
-var CHEER="This is it.,<br><span class='hs'>Yura!</span><br><span class='accent'>No one can stop you now.</span>";
+var CHEER="This is it,<br><span class='hs'>Yura!</span><br><span class='accent'>No one can stop you now.</span>";
 function typeCheer(){
   var el=document.getElementById('typedSpan'),cur=document.getElementById('cur');
   var tokens=CHEER.match(/<[^>]+>|[^<]/g)||[];
